@@ -1,0 +1,16 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: 小依梦
+ * Date: 2020/3/22
+ * Time: 15:05
+ */
+
+namespace app\model;
+
+
+use ymphp\base\Model;
+
+class User extends Model {
+
+}
