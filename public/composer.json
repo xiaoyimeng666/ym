@@ -1,0 +1,15 @@
+{
+    "require": {
+        "twig/twig": "3.0"
+    },
+    "config": {
+        "vendor-dir" : "vendor",
+        "secure-http": false
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
+    }
+}

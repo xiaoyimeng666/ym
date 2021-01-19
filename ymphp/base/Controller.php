@@ -43,6 +43,17 @@ class Controller{
         }
         return '';
     }
+
+    public function getFile($name){
+       $files = $_FILES;
+        foreach ($files as $key => $file) {
+            var_dump($key);
+            var_dump($file);
+       }
+    }
+
+
+
 //找时间把下面代码放到helper.php(未创建)
     private function getStr($var) {
         if (is_array($var)){
