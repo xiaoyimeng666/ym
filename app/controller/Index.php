@@ -18,17 +18,17 @@ class Index extends Controller {
         $this->assign('arr', [1,2,3,4,5]);
 
         return $this->view();
-//        echo 'hello world';
     }
     public function add(){
         echo 1;
     }
 
     public function aaa(){
-        echo '<pre>';
         $user = new User();
-        $user->a = 1;
-        $user->save();
+//        $user->a = 1;
+//        $user->save();
+        $res = $user->field('a')->field('username')->where('a','a1')->find();
+        var_dump($res);
     }
 
     public function test2(){

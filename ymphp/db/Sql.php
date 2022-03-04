@@ -19,6 +19,12 @@ class Sql{
 
     protected $bind;
 
+    protected $field = '';
+
+    protected $wheres = '';
+
+    protected $sql = '';
+
     protected $sqlQuery;
 
     protected $prepare;
@@ -54,14 +60,35 @@ class Sql{
         }
     }
 
+    /***
+     * @return $this
+     * 指定查询字段
+     */
+    public function field($field){
+        $this->field .= ','.$field;
+        $this->field = ltrim($this->field,',');
+        return $this;
+    }
 
-    public function where($where){
-        if($where){
-            foreach ($where as $key => $val){
+    /***
+     * @param mixed $field     查询字段
+     * @param mixed $op        查询表达式
+     * @param mixed $condition 查询条件
+     * @return $this
+     */
+    public function where($field, $op = null, $condition = null){
+        if(is_string($field)){
 
-            }
         }
-        return null;
+        return $this;
+    }
+    /***
+     * 查询
+     */
+    public function find(){
+        $sql =  $this->selectSQL();
+        return $this->query($sql);
+//        return $sql;
     }
 
     /***
@@ -119,7 +146,7 @@ class Sql{
 
 
     /***
-     * @param $arr
+     * @param $data
      * @return string
      * 创建新增数据的sql
      */
@@ -138,6 +165,18 @@ class Sql{
             return $sql;
         }
     }
+    /***
+     * @param $data
+     * @return string
+     * 创建查询的sql
+     */
+    protected function selectSQL(){
+        $field = $this->field == '' ? '*' : $this->field;
+        $where = $this->wheres == '' ? ' ' : ' where ' .$this->wheres;
+        return 'select ' . $field . ' from ' . $this->table . $where;
+    }
+
+
 
     /***
      * @param $data
