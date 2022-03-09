@@ -13,4 +13,12 @@ use ymphp\base\Model;
 
 class User extends Model {
 
+    public function getUserByIds($ids){
+        if (is_array($ids)){
+//            $ids = implode("_", $ids);
+            return $this->where('id','in',$ids)->find();
+        }
+        return $this->where('id',"$ids")->find();
+    }
+
 }

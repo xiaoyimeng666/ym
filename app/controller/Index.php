@@ -26,8 +26,9 @@ class Index extends Controller {
     public function aaa(){
         $user = new User();
 //        $user->a = 1;
-//        $user->save();
-        $res = $user->field('a')->field('username')->where('a','a1')->find();
+//        $res = $user->save();
+//        $res = $user->field('a,username')->where('username','wuhu')->find();
+        $res = $user->getUserByIds([1,2]);
         var_dump($res);
     }
 

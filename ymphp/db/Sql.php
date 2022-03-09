@@ -45,6 +45,8 @@ class Sql{
      */
     public function save(){
         $sql = $this->insertSQL($this->data);
+//        return $this->query($sql);
+
         if (!empty($this->prepare)) {
             $this->free();
         }
@@ -77,8 +79,23 @@ class Sql{
      * @return $this
      */
     public function where($field, $op = null, $condition = null){
-        if(is_string($field)){
+        if(is_null($op) && is_null($condition)){
+            if(is_array($field)){
 
+            }else{
+                $this->wheres .= $this->wheres == '' ? $field : ' and '.$field;
+            }
+        }elseif (in_array($op,['null','not null'])){
+            $this->wheres .= $this->wheres == '' ? $field . ' is ' . ":$op" : ' and '.$field . ' is ' . ":$op";
+            $this->bind[$op] = $op;
+        }elseif (is_null($condition)){
+            $this->wheres .= $this->wheres == '' ? $field . ' = ' . ":$op" : ' and '.$field . ' = ' . ":$op";
+            $this->bind[$op] = $op;
+        }elseif (is_array($condition)){
+
+        }else{
+            $this->wheres .= $this->wheres == '' ? " $field " . " $op " . " :$condition " : ' and '." $field " . " $op " . " :$condition ";
+            $this->bind[$condition] = $condition;
         }
         return $this;
     }
@@ -87,6 +104,9 @@ class Sql{
      */
     public function find(){
         $sql =  $this->selectSQL();
+//        print_r($this->bind);
+//        echo '<br/>';
+//        print_r($sql);
         return $this->query($sql);
 //        return $sql;
     }
@@ -108,10 +128,9 @@ class Sql{
             $this->prepare = $this->link->prepare($sql);
             if($this->prepare){
                 $this->bindParam();
+//                    $this->bindParam2Array($this->bind);
                 $this->prepare->execute();
-    //            $result = $this->prepare->get_result();
-    //            $this->checkError($result);
-
+                return $this->prepare->debugDumpParams();
                 return $this->prepare->fetchAll(\PDO::FETCH_ASSOC);
             }
         } catch (\PDOException $e){
@@ -173,7 +192,7 @@ class Sql{
     protected function selectSQL(){
         $field = $this->field == '' ? '*' : $this->field;
         $where = $this->wheres == '' ? ' ' : ' where ' .$this->wheres;
-        return 'select ' . $field . ' from ' . $this->table . $where;
+        return 'select ' . $field . ' from ' . "`$this->table`" . $where;
     }
 
 
